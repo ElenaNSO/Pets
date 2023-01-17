@@ -88,36 +88,97 @@ const pets = [
     "parasites": ["lice", "fleas"]
   }
 ]
+// размер картинок (все картинки — равные друг другу квадраты)
+//const PIC_SIZE = document.querySelector('.pets-img').offsetWidth;
 
-const POPAP_LEFT = document.querySelector("#menu-burger");
-const POPAP_SLIDE_IN = document.querySelector("#popap-menu");
-const BODY_BACKGROUND = document.body;
-const SROLL_BODY = document.querySelector("#body-syze");
-const POPAP_CLOSE = document.querySelector("#popap-menu-burger");                   
+// размер области просмотра карусели картинок
+//const VIEWPORT_SIZE = 3 * PIC_SIZE + 120 + 'px';
+
+// предварительная настройка каркаса карусели
+//const a = document.querySelector('.carusel-area');
+//a.style.width = VIEWPORT_SIZE + "px";
+//const b = document.querySelector('.pets-orientation');
+//b.style.width = 50 + VIEWPORT_SIZE + 50 + "px";
+
+// позиционируем кнопки
+//let arrowLeft  = document.querySelectorAll(".button-carousel")[0],
+//    arrowRight = document.querySelectorAll(".button-carousel")[1];
+//arrowLeft.style.left = "20px";
+//arrowLeft.style.top = (10 + PIC_SIZE + 10) / 2 - arrowLeft.offsetHeight / 2 + "px";
+//arrowRight.style.right = "10px";
+//arrowRight.style.top = (10 + PIC_SIZE + 10) / 2 - arrowRight.offsetHeight / 2 + "px";
+
+const CAROUSEL = document.querySelector('.button-carousel');
+const IMAGES_SLAIDER = document.querySelectorAll('.pets-article');
+let massImagesSlaider = Array.from(IMAGES_SLAIDER);
+//let massPointsSlaider = Array.from(document.querySelectorAll('.slider__dot'));//точки
+let ActivElement = 0;
+
+//переход по стрелкам влево
 const moveLeft = () => {
-  POPAP_SLIDE_IN.classList.add("display-block");
-  POPAP_SLIDE_IN.classList.add("transition-left");
-  POPAP_SLIDE_IN.style.display = "block";
- SROLL_BODY.classList.add("body-syze-background");
-  
-};
+    if(ActivElement != 0) {
+        massImagesSlaider[ActivElement - 1].classList.add('display-block');
+       // massImagesSlaider[ActivElement].classList.add('display-block');
+       // massImagesSlaider[ActivElement + 1].classList.add('display-block');
+        ActivElement = ActivElement - 1;
+        
+        massImagesSlaider[ActivElement].classList.add("transition-left");
+        massImagesSlaider.style.display = "block";
+//SROLL_BODY.classList.add("body-syze-background");
+    }
+    else {
+      massImagesSlaider.forEach(element => {
+        element.classList.add('display-close');
+        
+      });
+      IMAGES_SLAIDER[ActivElement + 1].style.display = "block";
+      IMAGES_SLAIDER[ActivElement + 1].classList.add("transition-left");
+     // IMAGES_SLAIDER[ActivElement + 2].style.display = "block";
+      //IMAGES_SLAIDER[ActivElement + 3].style.display = "block";
 
-const popapClose = () => {
-  POPAP_SLIDE_IN.classList.add("transition-close");
-  SROLL_BODY.classList.remove("body-syze-background");
-  popapClose.removeEventListener("click", popapClose);
+      //massImagesSlaider.classList.add('display-close');
+       // IMAGES_SLAIDER[ActivElement + 1].classList.add('display-block');
+        
+        
+        //IMAGES_SLAIDER[ActivElement + 1].classList.add("transition-left");
+
+        //IMAGES_SLAIDER[ActivElement + 2].classList.add('display-block');
+       
+        //IMAGES_SLAIDER[ActivElement + 2].classList.add("transition-left");
+
+       
+        //IMAGES_SLAIDER[ActivElement + 3].classList.add('display-block');
+        //IMAGES_SLAIDER[ActivElement + 3].classList.add("transition-left");
+        //ImagesSlaider.style.display = "block";
+        ActivElement = massImagesSlaider.length - 1;
+    }
+    //massPointsSlaider[ActivElement].classList.add('slider__dot_active'); 
 }
 
-POPAP_LEFT.addEventListener("click", moveLeft);
-POPAP_CLOSE.addEventListener("click", popapClose);
+//переход по стрелкам вправо
+const moveRight = () => {
+    if(ActivElement != (massImagesSlaider.length - 1)) {
+        massImagesSlaider[ActivElement + 1].classList.add('display-block');
+        ActivElement =  ActivElement + 1;
+    }
+    else {
+        massImagesSlaider[0].classList.add('display-block');
+        ActivElement = 0;
+    }
+    //massPointsSlaider[ActivElement].classList.add('slider__dot_active');
+}
 
-CAROUSEL.addEventListener("animationend", (animationEvent) => {
-	
-if (animationEvent.animationName === "move-left") {
-POPAP_LEFT.addEventListener("click", moveLeft);
-};
-if (animationEvent.animationName === "move-close") {
-POPAP_CLOSE.addEventListener("click", popapClose);	
-}	
-	
+CAROUSEL.addEventListener('click', element => {
+  //massImagesSlaider.classList.add('display-close');
+   // massImagesSlaider[ActivElement].classList.remove('display-block');
+    //massPointsSlaider[ActivElement].classList.remove('slider__dot_active');
+    if(element.target.classList.contains('button-arow-left')) {
+        moveLeft();
+        }
+    else {
+            if(element.target.classList.contains('button-arow-right')) {
+                moveRight();  
+            }
+        }
 })
+
